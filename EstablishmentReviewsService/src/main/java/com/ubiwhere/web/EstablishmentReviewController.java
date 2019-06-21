@@ -17,13 +17,20 @@ import com.ubiwhere.exception.ResourceNotFoundException;
 import com.ubiwhere.model.EstablishmentReviewEntity;
 import com.ubiwhere.service.EstablishmentReviewService;
 
+import io.swagger.annotations.ApiOperation;
+
 @RestController
 public class EstablishmentReviewController {
 	
 	@Autowired
 	EstablishmentReviewService esablishmentReviewService;
 	
+	/**
+	 * List all the establishment from the database.
+	 * @return List with all EstablishmentReviewEntity from the database
+	 */
 	@GetMapping("/review")
+	@ApiOperation(value="List all the establishment reviews from the database.", notes=" Will display all the establishment reviews saved at the database.")
 	public Iterable<EstablishmentReviewEntity> retriveAllEstablishmentReview(){
 		return this.esablishmentReviewService.getEstablishmentReviews();
 	}
@@ -36,40 +43,49 @@ public class EstablishmentReviewController {
 	@PostMapping(value="/review",
 					produces = MediaType.APPLICATION_JSON_VALUE,
 					consumes = MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(value="Save a establishment review at the database.", notes=" Will save the informations from the json passed at the request body.")
 	public @ResponseBody ResponseEntity<EstablishmentReviewEntity> saveEstablishmentReview(@RequestBody EstablishmentReviewEntity establishmentReviewEntity){
 		this.esablishmentReviewService.saveEstablishmentReview(establishmentReviewEntity);
 		return new ResponseEntity<EstablishmentReviewEntity>(establishmentReviewEntity, HttpStatus.CREATED);
 	}
 	
 	/**
-	 * Retrive an estabilishment review from the database.
-	 * @param id of estabilishment review to be retrived
-	 * @return An estabilishment review for this estabilishment id.
+	 * Retrieve an establishment review from the database.
+	 * @param id of establishment review to be retrieved
+	 * @return An establishment review for this establishment id.
 	 * @throws ResourceNotFoundException 
 	 */
 	@GetMapping(value = "/review/{establishment_id}",  
 					produces=MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(value="Retrieve an establishment review from the database.", notes=" Will retrieve the review with the given id.")
 	public EstablishmentReviewEntity getEstablishmentreview(@PathVariable("establishment_id") long id) throws ResourceNotFoundException  {
 		return this.esablishmentReviewService.getEstablishmentReview(id);
 	}
 	
 	/**
-	 * Delete an estabilishment review from the database.
-	 * @param id of estabilishment to be delete
-	 * @return An estabilishment review for this estabilishment id.
+	 * Delete an establishment review from the database.
+	 * @param id of establishment to be delete
+	 * @return An establishment review for this establishment id.
 	 * @throws ResourceNotFoundException 
 	 */
 	@DeleteMapping(value = "/review/{establishment_id}")
+	@ApiOperation(value="Delete an establishment review from the database.", notes=" Will delete the review with the given id.")
 	public void deleteEstablishmentreview(@PathVariable("establishment_id") long id) throws ResourceNotFoundException  {
 		this.esablishmentReviewService.deleteEstablishmentReviewEntity(id);
 		
 	}
 	
-	@PutMapping(value="review/{id}",
+	/**
+	 * Update an establishment review from the database with the json information.
+	 * @param establishmentReviewEntity informations to be updated
+	 * @param id of the establishment review to be updated
+	 * @return the establishment review updated or an empty response if the id was not founded.
+	 */
+	@PutMapping(value="review/{establishment_id}",
 			produces = MediaType.APPLICATION_JSON_VALUE,
 			consumes = MediaType.APPLICATION_JSON_VALUE)
-	
-	public @ResponseBody ResponseEntity<EstablishmentReviewEntity> updateEstablishmentReview(@RequestBody EstablishmentReviewEntity establishmentReviewEntity, @PathVariable long id){
+	@ApiOperation(value="Update an establishment review from the database.", notes=" Will update the review with the given id with the informations from json on the body request.")
+	public @ResponseBody ResponseEntity<EstablishmentReviewEntity> updateEstablishmentReview(@RequestBody EstablishmentReviewEntity establishmentReviewEntity, @PathVariable("establishment_id") long id){
 		establishmentReviewEntity.setId(id);
 		
 			try {

@@ -1,7 +1,11 @@
 package com.ubiwhere.EstablishmentService.web;
 
+import java.util.Collections;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,15 +27,23 @@ public class EstablishmentServiceController {
 	}
 	
 	@GetMapping("estabilishment/{establishment_id}")
-	public EstablishmentAggregation getEstablishmentAggregation(@PathVariable("establishment_id") long id) {
+	public Establishment getEstablishmentAggregation(@PathVariable("establishment_id") long id) {
 		/*EstablishmentAggregation estabilishmentAggregation = new EstablishmentAggregation();
 		estabilishmentAggregation.setId(id);*/
 		
-		EstablishmentAggregation estabilishmentAggregation = restTemplateEureka.getForObject("http://esatblishment-review-service/review/"+id, EstablishmentAggregation.class);
+		//EstablishmentAggregation estabilishmentAggregation = restTemplateEureka.getForObject("http://establishment-review-service/review/"+id, EstablishmentAggregation.class);
 		
-		//Establishment establishment = restTemplateWithoutEureka.getForObject("http://api.ratings.food.gov.uk/Establishments/"+id, Establishment.class);
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentLength(1461);
+		headers.set("x-api-version", "2");
+		headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+		headers.setContentType(MediaType.APPLICATION_JSON);
 		
-		return estabilishmentAggregation;
+		
+		
+		Establishment establishment = restTemplateWithoutEureka.getForObject("http://api.ratings.food.gov.uk/Establishments/"+id, Establishment.class);
+		
+		return establishment;
 	}
 	
 }
