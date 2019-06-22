@@ -12,7 +12,7 @@ import javax.persistence.Id;
 
 @Entity
 public class EstablishmentReviewEntity {
-	private @Id @GeneratedValue long  id;
+	private @Id long  id;
 	private double averageReviewScore;
 	private int numberofReviews;
 	
