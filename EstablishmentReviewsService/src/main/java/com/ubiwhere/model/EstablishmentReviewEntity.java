@@ -49,8 +49,35 @@ public class EstablishmentReviewEntity {
 	public void setNumberofReviews(int numberofReviews) {
 		this.numberofReviews = numberofReviews;
 	}
-	
-	
-	
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		long temp;
+		temp = Double.doubleToLongBits(averageReviewScore);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		result = prime * result + (int) (id ^ (id >>> 32));
+		result = prime * result + numberofReviews;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		EstablishmentReviewEntity other = (EstablishmentReviewEntity) obj;
+		if (Double.doubleToLongBits(averageReviewScore) != Double.doubleToLongBits(other.averageReviewScore))
+			return false;
+		if (id != other.id)
+			return false;
+		if (numberofReviews != other.numberofReviews)
+			return false;
+		return true;
+	}
 
 }

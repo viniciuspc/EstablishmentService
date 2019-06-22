@@ -53,7 +53,7 @@ public class EstablishmentReviewService {
 	 * @param id of the establishment review to be deleted.
 	 * @throws ResourceNotFoundException if id is null.
 	 */
-	public void deleteEstablishmentReviewEntity(long id) throws ResourceNotFoundException {
+	public void deleteEstablishmentReviewEntity(long id) {
 		this.establishmentReviweRepository.deleteById(id);
 		
 	}
