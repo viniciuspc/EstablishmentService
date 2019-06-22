@@ -1,35 +1,39 @@
 package com.ubiwhere.EstablishmentService.model;
 
+import com.ubiwhere.EstablishmentService.model.FHRS.Establishment;
+
+/**
+ * Class with the aggregation of the review and from the FHRS API
+ * @author vinicius
+ *
+ */
 public class EstablishmentAggregation {
-	private long  id;
-	private double averageReviewScore;
-	private int numberofReviews;
 	
-	public EstablishmentAggregation() {
+	private Establishment establishment;
+	private EstablishmentReview establishmentReview;
+	
+	public EstablishmentAggregation(Establishment establishment, EstablishmentReview establishmentReview) {
+		super();
+		this.establishment = establishment;
+		this.establishmentReview = establishmentReview;
 	}
 
-	public long getId() {
-		return id;
+	public Establishment getEstablishment() {
+		return establishment;
 	}
 
-	public double getAverageReviewScore() {
-		return averageReviewScore;
+	public void setEstablishment(Establishment establishment) {
+		this.establishment = establishment;
 	}
 
-	public int getNumberofReviews() {
-		return numberofReviews;
+	public EstablishmentReview getEstablishmentReview() {
+		return establishmentReview;
 	}
 
-	public void setId(long id) {
-		this.id = id;
+	public void setEstablishmentReview(EstablishmentReview establishmentReview) {
+		this.establishmentReview = establishmentReview;
 	}
-
-	public void setAverageReviewScore(double averageReviewScore) {
-		this.averageReviewScore = averageReviewScore;
-	}
-
-	public void setNumberofReviews(int numberofReviews) {
-		this.numberofReviews = numberofReviews;
-	}
+	
+	
 
 }

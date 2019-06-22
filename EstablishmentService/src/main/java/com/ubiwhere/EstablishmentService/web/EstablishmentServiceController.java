@@ -1,49 +1,44 @@
 package com.ubiwhere.EstablishmentService.web;
 
-import java.util.Collections;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
 
 import com.ubiwhere.EstablishmentService.model.EstablishmentAggregation;
+import com.ubiwhere.EstablishmentService.model.EstablishmentReview;
 import com.ubiwhere.EstablishmentService.model.FHRS.Establishment;
+import com.ubiwhere.EstablishmentService.service.EstablishmentFHRSService;
+import com.ubiwhere.EstablishmentService.service.EstablishmentReviewService;
 
 @RestController
 public class EstablishmentServiceController {
 	
-	private RestTemplate restTemplateEureka;
-	private RestTemplate restTemplateWithoutEureka;
+	@Autowired
+	private EstablishmentFHRSService establishmentFHRSService;
 	
 	@Autowired
-	public EstablishmentServiceController(@Qualifier("withEureka") RestTemplate restTemplateEureka, @Qualifier("withoutEureka")  RestTemplate restTemplateWithoutEureka) {
-		this.restTemplateEureka = restTemplateEureka;
-		this.restTemplateWithoutEureka = restTemplateWithoutEureka;
-	}
+	private EstablishmentReviewService establishmentReviewService;
 	
-	@GetMapping("estabilishment/{establishment_id}")
-	public Establishment getEstablishmentAggregation(@PathVariable("establishment_id") long id) {
-		/*EstablishmentAggregation estabilishmentAggregation = new EstablishmentAggregation();
-		estabilishmentAggregation.setId(id);*/
+	
+	@GetMapping(value="estabilishment/{establishment_id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public EstablishmentAggregation getEstablishmentAggregation(@PathVariable("establishment_id") long id) throws InterruptedException, ExecutionException {
 		
-		//EstablishmentAggregation estabilishmentAggregation = restTemplateEureka.getForObject("http://establishment-review-service/review/"+id, EstablishmentAggregation.class);
+		CompletableFuture<EstablishmentReview> establishmentReview = establishmentReviewService.getEstablishmentReview(id);
 		
-		HttpHeaders headers = new HttpHeaders();
-		headers.setContentLength(1461);
-		headers.set("x-api-version", "2");
-		headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-		headers.setContentType(MediaType.APPLICATION_JSON);
+		CompletableFuture<Establishment> establishment = establishmentFHRSService.getEstablishment(id);
+		
+		//Wait for the both threads return their results
+		CompletableFuture.allOf(establishmentReview,establishment).join();
+		
+		EstablishmentAggregation establishmentAggregation = new EstablishmentAggregation(establishment.get(), establishmentReview.get());
 		
 		
-		
-		Establishment establishment = restTemplateWithoutEureka.getForObject("http://api.ratings.food.gov.uk/Establishments/"+id, Establishment.class);
-		
-		return establishment;
+		return establishmentAggregation;
 	}
 	
 }
