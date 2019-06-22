@@ -28,6 +28,7 @@ public class EstablishmentServiceController {
 	@GetMapping(value="estabilishment/{establishment_id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public EstablishmentAggregation getEstablishmentAggregation(@PathVariable("establishment_id") long id) throws InterruptedException, ExecutionException {
 		
+		
 		CompletableFuture<EstablishmentReview> establishmentReview = establishmentReviewService.getEstablishmentReview(id);
 		
 		CompletableFuture<Establishment> establishment = establishmentFHRSService.getEstablishment(id);

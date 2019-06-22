@@ -4,8 +4,10 @@ import java.util.concurrent.CompletableFuture;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import com.ubiwhere.EstablishmentService.model.EstablishmentReview;
@@ -34,7 +36,15 @@ public class EstablishmentReviewService {
 	@Async
 	public CompletableFuture<EstablishmentReview> getEstablishmentReview(long id) {
 		
-		EstablishmentReview establishmentReview = restTemplateEureka.getForObject("http://establishment-review-service/review/"+id, EstablishmentReview.class);
+		EstablishmentReview establishmentReview = new EstablishmentReview();
+		try {
+			establishmentReview = restTemplateEureka.getForObject("http://establishment-review-service/review/"+id, EstablishmentReview.class);
+		} catch (HttpClientErrorException ex)   {
+			//Throw the HttpClientErrorException if the status is other than NOT_FUND
+		    if (ex.getStatusCode() != HttpStatus.NOT_FOUND) {
+		        throw ex;
+		    }
+		}
 		
 		return CompletableFuture.completedFuture(establishmentReview);
 	}

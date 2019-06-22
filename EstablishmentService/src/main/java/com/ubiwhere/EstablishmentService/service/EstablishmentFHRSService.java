@@ -8,10 +8,11 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import com.ubiwhere.EstablishmentService.model.FHRS.Establishment;
@@ -49,13 +50,22 @@ public class EstablishmentFHRSService {
 		//Request body is created with request body and headers
 		HttpEntity<Establishment> requestEntity = new HttpEntity<Establishment>(new Establishment(), headers);
 		
-		ResponseEntity<Establishment> establishment = restTemplateWithoutEureka.exchange(
-				"http://api.ratings.food.gov.uk/Establishments/"+id, 
-				HttpMethod.GET, 
-				requestEntity, 
-				Establishment.class);
+		Establishment establishment = new Establishment();
 		
-		return CompletableFuture.completedFuture(establishment.getBody());
+		try {
+			establishment = restTemplateWithoutEureka.exchange(
+					"http://api.ratings.food.gov.uk/Establishments/"+id, 
+					HttpMethod.GET, 
+					requestEntity, 
+					Establishment.class).getBody();
+		} catch (HttpClientErrorException ex)   {
+			//Throw the HttpClientErrorException if the status is other than NOT_FUND
+		    if (ex.getStatusCode() != HttpStatus.NOT_FOUND) {
+		        throw ex;
+		    }
+		}
+		
+		return CompletableFuture.completedFuture(establishment);
 		
 	}
 
