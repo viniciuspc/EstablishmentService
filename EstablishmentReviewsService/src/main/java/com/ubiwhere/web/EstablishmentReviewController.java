@@ -58,8 +58,12 @@ public class EstablishmentReviewController {
 	@GetMapping(value = "/review/{establishment_id}",  
 					produces=MediaType.APPLICATION_JSON_VALUE)
 	@ApiOperation(value="Retrieve an establishment review from the database.", notes=" Will retrieve the review with the given id.")
-	public EstablishmentReviewEntity getEstablishmentreview(@PathVariable("establishment_id") long id) throws ResourceNotFoundException  {
-		return this.esablishmentReviewService.getEstablishmentReview(id);
+	public ResponseEntity<EstablishmentReviewEntity> getEstablishmentreview(@PathVariable("establishment_id") long id) throws ResourceNotFoundException  {
+		try {
+			return new ResponseEntity<EstablishmentReviewEntity>(this.esablishmentReviewService.getEstablishmentReview(id), HttpStatus.OK);
+		} catch (ResourceNotFoundException ex) {
+			return ResponseEntity.notFound().build();
+		}
 	}
 	
 	/**

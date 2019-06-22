@@ -1,8 +1,8 @@
 package com.ubiwhere.model;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 /**
  * Model representing an establishment review
@@ -11,6 +11,7 @@ import javax.persistence.Id;
  */
 
 @Entity
+@Table(name="establishment_review")
 public class EstablishmentReviewEntity {
 	private @Id long  id;
 	private double averageReviewScore;
