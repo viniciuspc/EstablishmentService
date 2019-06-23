@@ -22,6 +22,8 @@ public class EstablishmentReviewService {
 	
 	private RestTemplate restTemplateEureka;
 	
+	protected static final String URL =  "http://establishment-review-service/review/";
+	
 	@Autowired
 	public EstablishmentReviewService(@Qualifier("withEureka") RestTemplate restTemplateEureka) {
 		this.restTemplateEureka = restTemplateEureka;
@@ -38,7 +40,7 @@ public class EstablishmentReviewService {
 		
 		EstablishmentReview establishmentReview = new EstablishmentReview();
 		try {
-			establishmentReview = restTemplateEureka.getForObject("http://establishment-review-service/review/"+id, EstablishmentReview.class);
+			establishmentReview = restTemplateEureka.getForObject(URL+id, EstablishmentReview.class);
 		} catch (HttpClientErrorException ex)   {
 			//Throw the HttpClientErrorException if the status is other than NOT_FUND
 		    if (ex.getStatusCode() != HttpStatus.NOT_FOUND) {
