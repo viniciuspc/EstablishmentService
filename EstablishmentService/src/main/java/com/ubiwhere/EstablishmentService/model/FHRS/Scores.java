@@ -33,6 +33,41 @@ public class Scores {
 	public void setConfidenceInManagement(Integer confidenceInManagement) {
 		this.confidenceInManagement = confidenceInManagement;
 	}
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((confidenceInManagement == null) ? 0 : confidenceInManagement.hashCode());
+		result = prime * result + ((hygiene == null) ? 0 : hygiene.hashCode());
+		result = prime * result + ((structural == null) ? 0 : structural.hashCode());
+		return result;
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (!(obj instanceof Scores))
+			return false;
+		Scores other = (Scores) obj;
+		if (confidenceInManagement == null) {
+			if (other.confidenceInManagement != null)
+				return false;
+		} else if (!confidenceInManagement.equals(other.confidenceInManagement))
+			return false;
+		if (hygiene == null) {
+			if (other.hygiene != null)
+				return false;
+		} else if (!hygiene.equals(other.hygiene))
+			return false;
+		if (structural == null) {
+			if (other.structural != null)
+				return false;
+		} else if (!structural.equals(other.structural))
+			return false;
+		return true;
+	}
     
     
 }

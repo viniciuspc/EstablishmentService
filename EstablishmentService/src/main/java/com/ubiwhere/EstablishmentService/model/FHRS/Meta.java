@@ -65,5 +65,55 @@ public class Meta {
 	public void setPageNumber(int pageNumber) {
 		this.pageNumber = pageNumber;
 	}
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((dataSource == null) ? 0 : dataSource.hashCode());
+		result = prime * result + ((extractDate == null) ? 0 : extractDate.hashCode());
+		result = prime * result + itemCount;
+		result = prime * result + pageNumber;
+		result = prime * result + pageSize;
+		result = prime * result + ((returncode == null) ? 0 : returncode.hashCode());
+		result = prime * result + totalCount;
+		result = prime * result + totalPages;
+		return result;
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (!(obj instanceof Meta))
+			return false;
+		Meta other = (Meta) obj;
+		if (dataSource == null) {
+			if (other.dataSource != null)
+				return false;
+		} else if (!dataSource.equals(other.dataSource))
+			return false;
+		if (extractDate == null) {
+			if (other.extractDate != null)
+				return false;
+		} else if (!extractDate.equals(other.extractDate))
+			return false;
+		if (itemCount != other.itemCount)
+			return false;
+		if (pageNumber != other.pageNumber)
+			return false;
+		if (pageSize != other.pageSize)
+			return false;
+		if (returncode == null) {
+			if (other.returncode != null)
+				return false;
+		} else if (!returncode.equals(other.returncode))
+			return false;
+		if (totalCount != other.totalCount)
+			return false;
+		if (totalPages != other.totalPages)
+			return false;
+		return true;
+	}
     
 }

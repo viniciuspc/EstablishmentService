@@ -27,6 +27,8 @@ public class EstablishmentFHRSService {
 	
 	private RestTemplate restTemplateWithoutEureka;
 	
+	protected static final String URL =  "http://api.ratings.food.gov.uk/Establishments/";
+	
 	@Autowired
 	public EstablishmentFHRSService(@Qualifier("withoutEureka")  RestTemplate restTemplateWithoutEureka) {
 		this.restTemplateWithoutEureka = restTemplateWithoutEureka;
@@ -54,7 +56,7 @@ public class EstablishmentFHRSService {
 		
 		try {
 			establishment = restTemplateWithoutEureka.exchange(
-					"http://api.ratings.food.gov.uk/Establishments/"+id, 
+					URL+id, 
 					HttpMethod.GET, 
 					requestEntity, 
 					Establishment.class).getBody();
