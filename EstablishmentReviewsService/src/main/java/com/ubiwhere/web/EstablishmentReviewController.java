@@ -74,7 +74,7 @@ public class EstablishmentReviewController {
 	 */
 	@DeleteMapping(value = "/review/{establishment_id}")
 	@ApiOperation(value="Delete an establishment review from the database.", notes=" Will delete the review with the given id.")
-	public void deleteEstablishmentreview(@PathVariable("establishment_id") long id) throws ResourceNotFoundException  {
+	public void deleteEstablishmentreview(@PathVariable("establishment_id") long id)  {
 		this.esablishmentReviewService.deleteEstablishmentReviewEntity(id);
 		
 	}
