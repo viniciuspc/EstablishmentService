@@ -68,7 +68,7 @@ public class EstablishmentReviewEntity {
 			return true;
 		if (obj == null)
 			return false;
-		if (getClass() != obj.getClass())
+		if (!(obj instanceof EstablishmentReviewEntity))
 			return false;
 		EstablishmentReviewEntity other = (EstablishmentReviewEntity) obj;
 		if (Double.doubleToLongBits(averageReviewScore) != Double.doubleToLongBits(other.averageReviewScore))
