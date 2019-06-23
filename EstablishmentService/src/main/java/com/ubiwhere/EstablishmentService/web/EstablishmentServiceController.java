@@ -27,7 +27,7 @@ public class EstablishmentServiceController {
 	private EstablishmentReviewService establishmentReviewService;
 	
 	
-	@GetMapping(value="estabilishment/{establishment_id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value="establishment/{establishment_id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiOperation(value="Return agregation information for the given establishment", notes=" Will consult the Establishment Review microservice as well as the FHRS and agregate the both information in one sigle return.")
 	public EstablishmentAggregation getEstablishmentAggregation(@PathVariable("establishment_id") long id) throws InterruptedException, ExecutionException {
 		
